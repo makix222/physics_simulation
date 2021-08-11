@@ -23,7 +23,7 @@ def distance(start: Position, end: Position) -> float:
 
 
 class Velocity:
-    def __init__(self, target: Position, start: Position = Position):
+    def __init__(self, target: Position = Position(), start: Position = Position()):
         self.magnitude = distance(start, target)
         self.direction = Position(x_pos=target.x - start.x,
                                   y_pos=target.y - start.y)

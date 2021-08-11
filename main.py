@@ -9,14 +9,17 @@ pygame.init()
 x = 300
 y = 300
 pixel_count = x * y
+background_color = (10, 10, 10)
 screen = pygame.display.set_mode((x, y))
+surface = pygame.display.get_surface()
 start_time = datetime.now()
 
-noise_gens = noise_gens.ParticleNoise(surface=pygame.display.get_surface())
-world_generator = WorldMechanics(surface=pygame.display.get_surface())
+noise_gens = noise_gens.ParticleNoise(surface=surface)
+world_generator = WorldMechanics(surface=surface)
 mouse_monitor = MouseMonitor(world_generator)
 
 while True:
+    surface.fill(background_color)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()

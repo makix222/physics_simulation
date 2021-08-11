@@ -1,6 +1,6 @@
 from pygame import Surface
 from particles import ParticleCollection
-from utility import Velocity
+from utility import Position, Velocity
 
 
 class WorldMechanics:
@@ -13,10 +13,11 @@ class WorldMechanics:
 
         self.gravity_constant = 2
 
-    def update_mouse_input(self, mouse_pressed, mouse_pos):
-        if mouse_pressed and not self.creating_particle:
-            self.particle_collection.add_particle(pos, )
+    def add_particle(self, pos: Position, velocity: Velocity):
+        self.particle_collection.add_particle(pos=pos, velocity=velocity)
 
+    def update(self):
+        self.particle_collection.draw_particles(self.surface)
 
 
 
