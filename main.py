@@ -13,6 +13,7 @@ background_color = (10, 10, 10)
 screen = pygame.display.set_mode((x, y))
 surface = pygame.display.get_surface()
 start_time = datetime.now()
+clock = pygame.time.Clock()
 
 noise_gens = noise_gens.ParticleNoise(surface=surface)
 world_mechanics = WorldMechanics(surface=surface)
@@ -23,9 +24,9 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
-
+    dt = clock.tick(60)
     mouse_monitor.update()
-    world_mechanics.update()
+    world_mechanics.update(time_step=dt)
 
     pygame.display.flip()
 

@@ -1,5 +1,5 @@
 from pygame import Surface
-from particles import ParticleCollection
+from particles import ParticleCollection, Particle
 from utility import Position, Velocity
 import random
 
@@ -20,14 +20,19 @@ class WorldMechanics:
                                               radius=random.randint(1, 10),
                                               density=random.randint(1, 100))
 
-    def update(self):
-        for each_particle in self.particle_collection.particle_collection:
-            pass
+    def update(self, time_step):
+        for particle in self.particle_collection.particle_collection.values():
+            new_particle = Particle(pos=particle.calculate_new_position(time_step=time_step),
+                                    velocity=particle.velocity,
+                                    radius=particle.radius,
+                                    density=particle.density)
+            new_particle.id = particle.id
+            self.particle_collection.particle_collection[particle.id] = new_particle
         self.draw()
 
     def draw(self):
         self.particle_collection.draw_particles(self.surface)
-        self.particle_collection.draw_center_of_mass(self.surface)
+        # self.particle_collection.draw_center_of_mass(self.surface)
 
 
 

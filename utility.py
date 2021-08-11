@@ -50,7 +50,6 @@ class CenterOfMass:
                                     end=new_pos,
                                     scale=mass_diff)
             self.eq_mass += new_mass
-        print(f"Old mass: {self.eq_mass} New mass: {new_mass}")
 
 
 

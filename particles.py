@@ -23,6 +23,9 @@ class Particle:
 
         self.color = (0, 255, 0)
 
+    def __repr__(self):
+        return f"Particle({self.pos}, {self.velocity}, {self.radius}, {self.density})"
+
     def _calc_surface_area(self) -> float:
         return pi * self._radius ** 2
 
@@ -53,6 +56,13 @@ class Particle:
                     center=end_location,
                     color=(0, 255, 255),
                     radius=self._radius - 1)
+
+    def calculate_new_position(self, time_step: float):
+        x_add = int(self.velocity.direction.x / time_step)
+        y_add = int(self.velocity.direction.y / time_step)
+        new_pos = Position(x_pos=self.pos.x + x_add,
+                           y_pos=self.pos.y + y_add)
+        return new_pos
 
     @property
     def radius(self):
@@ -109,9 +119,6 @@ class ParticleCollection:
     def _update_center_of_mass(self, new_particle: Particle):
         self.center_of_mass.update(new_pos=new_particle.pos,
                                    new_mass=new_particle.mass)
-
-    def update_single_particle(self, particle):
-        self.particle_collection[particle.id] = particle
 
     def draw_particles(self, surface: Surface):
         for each_particle in self.particle_collection.values():
