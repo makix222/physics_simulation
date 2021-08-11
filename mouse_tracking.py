@@ -26,13 +26,11 @@ class MouseMonitor:
             mouse_pos = Position(mouse.get_pos())
             new_velocity = Velocity(target=mouse_pos,
                                     start=self.ghost_particle.pos)
-            print(new_velocity)
-            print(f"Mouse pos: {mouse_pos}")
             self.ghost_particle.velocity = new_velocity
             self.ghost_particle.draw(self.surface)
             self.ghost_particle.draw_velocity(self.surface)
 
-        elif not mouse_state and self.previous_mouse_state[0]:
+        elif not mouse_state[0] and self.previous_mouse_state[0]:
             # Left click has been let go.
             self.world_mechanics.add_particle(pos=self.ghost_particle.pos,
                                               velocity=self.ghost_particle.velocity)
