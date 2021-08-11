@@ -1,5 +1,3 @@
-import random
-
 from pygame import draw, Surface
 from typing import Dict
 from utility import Position, Velocity, CenterOfMass
@@ -10,8 +8,8 @@ class Particle:
     def __init__(self,
                  pos: Position = Position(),
                  velocity: Velocity = Velocity(),
-                 radius: int = random.randint(1, 10),
-                 density: int = random.randint(1, 100)):
+                 radius: int = 1,
+                 density: int = 1):
         self.id: int = 0
 
         self.pos: Position = pos
@@ -98,8 +96,8 @@ class ParticleCollection:
     def add_particle(self,
                      pos: Position,
                      velocity: Velocity,
-                     radius: int = random.randint(1, 10),
-                     density: int = random.randint(1, 100)):
+                     radius: int = 1,
+                     density: int = 1):
         new_particle: Particle = Particle(pos=pos,
                                           velocity=velocity,
                                           radius=radius,
@@ -127,7 +125,7 @@ class ParticleCollection:
         draw.circle(surface=surface,
                     center=(self.center_of_mass.pos.x, self.center_of_mass.pos.y),
                     color=(255, 0 + self.count, 255 - self.count),
-                    radius=self.center_of_mass.eq_mass)
+                    radius=1)
 
 
 
