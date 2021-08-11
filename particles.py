@@ -15,9 +15,9 @@ class Particle:
         self.id: int = 0
 
         self.pos: Position = pos
-        self.velocity: Velocity = velocity
-        self.radius: int = radius
-        self.density: float = density
+        self._velocity: Velocity = velocity
+        self._radius: int = radius
+        self._density: float = density
 
         self.surface_area: float = self._calc_surface_area()
         self.mass: float = self._calc_mass()
@@ -26,26 +26,26 @@ class Particle:
         self.color = (0, 255, 0)
 
     def _calc_surface_area(self) -> float:
-        return pi * self.radius ** 2
+        return pi * self._radius ** 2
 
     def _calc_mass(self) -> float:
-        return self.density * self.surface_area
+        return self._density * self.surface_area
 
     def _calc_momentum(self) -> Velocity:
-        output: Velocity = self.velocity
+        output: Velocity = self._velocity
         output.magnitude = output.magnitude * self.mass
         return output
 
     def draw(self, surface: Surface):
         draw.circle(surface=surface,
                     center=(self.pos.x, self.pos.y),
-                    radius=self.radius,
-                    width=int(1 + round(self.density / 10, 1)),
+                    radius=self._radius,
+                    width=int(1 + round(self._density / 10, 1)),
                     color=self.color)
 
     def draw_velocity(self, surface: Surface):
-        end_location = (self.velocity.direction.x - self.pos.x,
-                        self.velocity.direction.y - self.pos.y)
+        end_location = (self._velocity.direction.x - self.pos.x,
+                        self._velocity.direction.y - self.pos.y)
         draw.line(surface=surface,
                   start_pos=(self.pos.x, self.pos.y),
                   end_pos=end_location,
@@ -54,18 +54,37 @@ class Particle:
         draw.circle(surface=surface,
                     center=end_location,
                     color=(0, 255, 255),
-                    radius=self.radius - 1)
+                    radius=self._radius - 1)
 
-    def update(self, **kwargs):
-        self.__dict__.update(kwargs)
-        if len([x for x in kwargs if x in ['mass',
-                                           'density',
-                                           'radius',
-                                           'surface_area',
-                                           'velocity']]):
-            self._calc_surface_area()
-            self._calc_mass()
-            self._calc_momentum()
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, new_radius: int):
+        self._radius = new_radius
+        self._calc_surface_area()
+        self._calc_mass()
+        self._calc_momentum()
+
+    @property
+    def density(self):
+        return self._density
+
+    @density.setter
+    def density(self, new_density: int):
+        self._density = new_density
+        self._calc_mass()
+        self._calc_momentum()
+
+    @property
+    def velocity(self):
+        return self._velocity
+
+    @velocity.setter
+    def velocity(self, new_velocity: Velocity):
+        self._velocity = new_velocity
+        self._calc_momentum()
 
 
 class ParticleCollection:

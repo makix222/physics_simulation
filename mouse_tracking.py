@@ -18,15 +18,17 @@ class MouseMonitor:
         if mouse_state[0] and not self.previous_mouse_state[0]:
             # New Mouse left click.
             mouse_pos = Position(mouse.get_pos())
-            self.ghost_particle.update(pos=mouse_pos,
-                                       velocity=Velocity())
+            self.ghost_particle.pos = mouse_pos
+            self.ghost_particle.velocity = Velocity(target=mouse_pos)
 
         elif mouse_state[0] and self.previous_mouse_state[0]:
             # Left click still being held.
             mouse_pos = Position(mouse.get_pos())
             new_velocity = Velocity(target=mouse_pos,
                                     start=self.ghost_particle.pos)
-            self.ghost_particle.update(velocity=new_velocity)
+            print(new_velocity)
+            print(f"Mouse pos: {mouse_pos}")
+            self.ghost_particle.velocity = new_velocity
             self.ghost_particle.draw(self.surface)
             self.ghost_particle.draw_velocity(self.surface)
 

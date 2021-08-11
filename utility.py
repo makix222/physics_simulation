@@ -10,6 +10,9 @@ class Position:
             self.x = x_pos
             self.y = y_pos
 
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
 
 def midway_point(start: Position, end: Position, scale) -> Position:
     output = Position()
@@ -23,10 +26,13 @@ def distance(start: Position, end: Position) -> float:
 
 
 class Velocity:
-    def __init__(self, target: Position = Position(), start: Position = Position()):
+    def __init__(self,start: Position = Position(), target: Position = Position()):
         self.magnitude = distance(start, target)
         self.direction = Position(x_pos=target.x - start.x,
                                   y_pos=target.y - start.y)
+
+    def __str__(self):
+        return f"Magnitude: {self.magnitude}, direction: {self.direction}"
 
 
 class CenterOfMass:

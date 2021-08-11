@@ -15,8 +15,8 @@ surface = pygame.display.get_surface()
 start_time = datetime.now()
 
 noise_gens = noise_gens.ParticleNoise(surface=surface)
-world_generator = WorldMechanics(surface=surface)
-mouse_monitor = MouseMonitor(world_generator)
+world_mechanics = WorldMechanics(surface=surface)
+mouse_monitor = MouseMonitor(world_mechanics)
 
 while True:
     surface.fill(background_color)
@@ -25,8 +25,8 @@ while True:
             exit()
 
     mouse_monitor.update()
+    world_mechanics.update()
 
-    noise_gens.draw_particles()
     pygame.display.flip()
 
 
