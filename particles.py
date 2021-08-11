@@ -120,6 +120,10 @@ class ParticleCollection:
         self.center_of_mass.update(new_pos=new_particle.pos,
                                    new_mass=new_particle.mass)
 
+    def update_particle_position(self, particle_id, particle):
+        self.particle_collection[particle_id] = particle
+        self._update_center_of_mass(particle)
+
     def draw_particles(self, surface: Surface):
         for each_particle in self.particle_collection.values():
             each_particle.draw(surface)

@@ -6,8 +6,8 @@ from mouse_tracking import MouseMonitor
 from physics_engine import WorldMechanics
 
 pygame.init()
-x = 300
-y = 300
+x = 800
+y = 800
 pixel_count = x * y
 background_color = (10, 10, 10)
 screen = pygame.display.set_mode((x, y))

@@ -27,12 +27,14 @@ class WorldMechanics:
                                     radius=particle.radius,
                                     density=particle.density)
             new_particle.id = particle.id
-            self.particle_collection.particle_collection[particle.id] = new_particle
+            self.particle_collection.update_particle_position(particle_id=new_particle.id,
+                                                              particle=new_particle)
+
         self.draw()
 
     def draw(self):
         self.particle_collection.draw_particles(self.surface)
-        # self.particle_collection.draw_center_of_mass(self.surface)
+        self.particle_collection.draw_center_of_mass(self.surface)
 
 
 
