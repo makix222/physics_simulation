@@ -44,13 +44,13 @@ class Particle:
                     color=self.color)
 
     def draw_velocity(self, surface: Surface):
-        end_location = (self._velocity.direction.x - self.pos.x,
-                        self._velocity.direction.y - self.pos.y)
+        end_location = (self._velocity.direction.x + self.pos.x,
+                        self._velocity.direction.y + self.pos.y)
         draw.line(surface=surface,
                   start_pos=(self.pos.x, self.pos.y),
                   end_pos=end_location,
                   width=1,
-                  color=(0, 255, 0))
+                  color=(255, 255, 0))
         draw.circle(surface=surface,
                     center=end_location,
                     color=(0, 255, 255),
