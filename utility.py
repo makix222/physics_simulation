@@ -13,6 +13,8 @@ class Position:
     def __str__(self):
         return f"({self.x}, {self.y})"
 
+    def __repr__(self):
+        return f"({self.x}, {self.y})"
 
 def midway_point(start: Position, end: Position, scale) -> Position:
     output = Position()
