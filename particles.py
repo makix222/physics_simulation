@@ -1,4 +1,4 @@
-from pygame import draw, Surface
+from pygame import draw, Surface, Rect
 from typing import Dict
 from utility import Position, Velocity, CenterOfMass
 from math import pi
@@ -22,6 +22,7 @@ class Particle:
         self.momentum: Velocity = self._calc_momentum()
 
         self.color = (0, 255, 0)
+        self.rect = Rect()
 
     def __repr__(self):
         return f"Particle({self.pos}, {self.velocity}, {self.radius}, {self.density})"

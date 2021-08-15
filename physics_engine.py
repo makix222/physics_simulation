@@ -64,9 +64,13 @@ class Walls:
         for each_wall in self.walls:
             each_wall.draw_wall()
 
+    def custom_walls(self):
+        pass
+
 
 class Wall:
     def __init__(self, surface: Surface, start: Position, end: Position, wall_thickness: int = 1):
+        """Currently just Horizontal or Vertical walls."""
         self.surface = surface
         self.start = (start.x, start.y)
         if start.x == end.x:

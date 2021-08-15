@@ -1,4 +1,4 @@
-from math import sqrt
+from math import sqrt, atan, degrees
 
 
 class Position:
@@ -16,11 +16,17 @@ class Position:
     def __repr__(self):
         return f"({self.x}, {self.y})"
 
+
 def midway_point(start: Position, end: Position, scale) -> Position:
     output = Position()
     output.x = start.x - int((start.x - end.x) / (1 + scale))
     output.y = start.y - int((start.y - end.y) / (1 + scale))
     return output
+
+
+def bearing(start: Position, end: Position) -> float:
+    """Returns a degree from 0-360 where 0 is on the top of the screen"""
+    return degrees(atan((end.x - start.x)/(end.y - start.y)))
 
 
 def distance(start: Position, end: Position) -> float:
