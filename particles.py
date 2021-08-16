@@ -22,10 +22,12 @@ class Particle:
         self.momentum: Velocity = self._calc_momentum()
 
         self.color = (0, 255, 0)
-        self.rect = Rect()
+
+    def __str__(self):
+        return f"Particle({self.pos}, {self.velocity}, {self.radius}, {self.density})"
 
     def __repr__(self):
-        return f"Particle({self.pos}, {self.velocity}, {self.radius}, {self.density})"
+        return f"{self.pos}"
 
     def _calc_surface_area(self) -> float:
         return pi * self._radius ** 2
@@ -118,6 +120,7 @@ class ParticleCollection:
         self._update_center_of_mass(new_particle)
 
     def _update_center_of_mass(self, new_particle: Particle):
+        # ToDo: why does center of mass not update correctly with a single particle?
         self.center_of_mass.update(new_pos=new_particle.pos,
                                    new_mass=new_particle.mass)
 

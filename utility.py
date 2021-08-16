@@ -1,4 +1,4 @@
-from math import sqrt, atan, degrees
+from math import sqrt, atan, degrees, sin, cos
 
 
 class Position:
@@ -26,7 +26,28 @@ def midway_point(start: Position, end: Position, scale) -> Position:
 
 def bearing(start: Position, end: Position) -> float:
     """Returns a degree from 0-360 where 0 is on the top of the screen"""
-    return degrees(atan((end.x - start.x)/(end.y - start.y)))
+    return degrees(atan((end.x - start.x) / (end.y - start.y)))
+
+
+def pos_from_bearing(pos: Position, length: int, bearing_angle: float) -> Position:
+    delta_x = sin(bearing_angle) * length
+    if 0 < delta_x < 1:
+        delta_x = 1
+    elif -1 < delta_x < 0:
+        delta_x = -1
+    else:
+        delta_x = int(delta_x)
+
+    delta_y = cos(bearing_angle) * length
+    if 0 < delta_y < 1:
+        delta_y = 1
+    elif -1 < delta_y < 0:
+        delta_y = -1
+    else:
+        delta_y = int(delta_y)
+    output = Position(x_pos=pos.x + delta_x,
+                      y_pos=pos.y + delta_y)
+    return output
 
 
 def distance(start: Position, end: Position) -> float:
@@ -61,6 +82,3 @@ class CenterOfMass:
                                     end=new_pos,
                                     scale=mass_diff)
             self.eq_mass += new_mass
-
-
-
