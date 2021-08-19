@@ -1,4 +1,5 @@
-from math import sqrt, atan, degrees, sin, cos
+from math import sqrt, atan, degrees
+import numpy as np
 
 
 class Position:
@@ -17,7 +18,7 @@ class Position:
         return f"({self.x}, {self.y})"
 
 
-def midway_point(start: Position, end: Position, scale) -> Position:
+def midway_point(start: Position, end: Position, scale=1) -> Position:
     output = Position()
     output.x = start.x - int((start.x - end.x) / (1 + scale))
     output.y = start.y - int((start.y - end.y) / (1 + scale))
@@ -29,25 +30,37 @@ def bearing(start: Position, end: Position) -> float:
     return degrees(atan((end.x - start.x) / (end.y - start.y)))
 
 
-def pos_from_bearing(pos: Position, length: int, bearing_angle: float) -> Position:
-    delta_x = sin(bearing_angle) * length
-    if 0 < delta_x < 1:
-        delta_x = 1
-    elif -1 < delta_x < 0:
-        delta_x = -1
-    else:
-        delta_x = int(delta_x)
+def point_from_bearing(start_pos: Position, bearing_angle: float, length: int = 1) -> Position:
+    bearing_rad = np.radians(bearing_angle)
+    cos = np.cos(bearing_rad)
+    sin = np.sin(bearing_rad)
+    return Position(x_pos=int(cos * length) + start_pos.x,
+                    y_pos=int(sin * length) + start_pos.y)
 
-    delta_y = cos(bearing_angle) * length
-    if 0 < delta_y < 1:
-        delta_y = 1
-    elif -1 < delta_y < 0:
-        delta_y = -1
+
+def rotation_from_point(point_to_rotate: Position, center_of_rotation: Position, rotation_angle: float) -> Position:
+    rotation_rad = np.radians(rotation_angle)
+    cos = np.cos(rotation_rad)
+    sin = np.sin(rotation_rad)
+    rotation_matrix = np.array(((cos, -sin), (sin, cos)))
+    new_point = np.array([[point_to_rotate.x - center_of_rotation.x], [point_to_rotate.y - center_of_rotation.y]])
+    delta_rotation = rotation_matrix * new_point
+    final_pos = Position(x_pos=int(delta_rotation[0][1] + center_of_rotation.x),
+                         y_pos=int(delta_rotation[1][0] + center_of_rotation.y))
+    return final_pos
+
+
+def generate_normal_point(start_pos: Position, bearing_angle: float, length: int = 1) -> Position:
+    point_ahead = point_from_bearing(start_pos, bearing_angle, length)
+
+    if length > 0:
+        rotation_angle = 90
     else:
-        delta_y = int(delta_y)
-    output = Position(x_pos=pos.x + delta_x,
-                      y_pos=pos.y + delta_y)
-    return output
+        rotation_angle = -90
+    normal_point = rotation_from_point(point_to_rotate=point_ahead,
+                                       center_of_rotation=start_pos,
+                                       rotation_angle=rotation_angle)
+    return normal_point
 
 
 def distance(start: Position, end: Position) -> float:

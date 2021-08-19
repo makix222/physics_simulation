@@ -1,6 +1,6 @@
-from pygame import Surface, Rect, draw, error
+from pygame import Surface, Rect, draw, transform
 from particles import ParticleCollection, Particle
-from utility import Position, Velocity, bearing, pos_from_bearing
+from utility import Position, Velocity, bearing, generate_normal_point
 import random
 from typing import List, Union
 
@@ -72,11 +72,15 @@ class Walls:
                                  y_pos=random.randint(self.wall_thickness, self.world_y))
             end_pos = Position(x_pos=random.randint(self.wall_thickness, self.world_x),
                                y_pos=random.randint(self.wall_thickness, self.world_y))
-            wall_width = random.randint(2, 7)
+            wall_width = random.randint(10, 100)
             custom_walls.append(LinearWall(surface=self.surface,
                                            start=start_pos,
                                            end=end_pos,
                                            wall_thickness=wall_width))
+        # custom_walls.append(LinearWall(surface=self.surface,
+        #                                start=Position((200, 200)),
+        #                                end=Position((400, 400)),
+        #                                wall_thickness=80))
         self.walls.extend(custom_walls)
 
 
@@ -109,19 +113,33 @@ class LinearWall:
     def __init__(self, surface: Surface, start: Position, end: Position, wall_thickness: int = 1):
         """Creates a wall where the start and end makes a line, then makes it thick"""
         self.surface = surface
-        self.start = (start.x, start.y)
-        end_bearing = bearing(start, end)
-        end_pos = pos_from_bearing(pos=end, length=wall_thickness, bearing_angle=end_bearing)
-        self.end = (end_pos.x, end_pos.y)
         self.wall_color = (88, 217, 255)  # Light blue
-        self.rect: Rect = Rect(self.start, self.end)
-        self.thickness = wall_thickness
+        bearing_angle = bearing(start, end)
+
+        normal_end = generate_normal_point(end, bearing_angle, wall_thickness)
+        normal_start = generate_normal_point(start, bearing_angle, wall_thickness)
+
+        point_1 = (start.x, start.y)
+        point_2 = (end.x, end.y)
+        point_3 = (normal_end.x, normal_end.y)
+        point_4 = (normal_start.x, normal_start.y)
+
+        self.points = [point_1, point_2, point_3, point_4]
 
     def draw_wall(self):
-        draw.rect(surface=self.surface,
-                  rect=self.rect,
-                  color=self.wall_color,
-                  width=self.thickness)
+        draw.polygon(surface=self.surface,
+                     points=self.points,
+                     color=self.wall_color)
 
-    def __repr__(self):
-        return f"start: {self.start} end: {self.end}"
+        # Debug lines
+        draw.line(surface=self.surface,
+                  start_pos=self.points[0],
+                  end_pos=self.points[1],
+                  color=(255, 0, 0),
+                  width=1)
+        draw.line(surface=self.surface,
+                  start_pos=self.points[0],
+                  end_pos=self.points[3],
+                  color=(255, 0, 0),
+                  width=1)
+
