@@ -1,6 +1,6 @@
 from pygame import Surface, Rect, draw, transform
 from particles import ParticleCollection, Particle
-from utility import Position, Velocity, bearing, generate_normal_point
+from utility import Position, Vector, bearing, generate_normal_point
 import random
 from typing import List, Union
 
@@ -19,7 +19,7 @@ class WorldMechanics:
                            y_world_size=self.display_size[1])
         self.walls.generate_custom_walls()
 
-    def add_particle(self, pos: Position, velocity: Velocity):
+    def add_particle(self, pos: Position, velocity: Vector):
         self.particle_collection.add_particle(pos=pos,
                                               velocity=velocity,
                                               radius=random.randint(1, 10),
@@ -130,16 +130,4 @@ class LinearWall:
         draw.polygon(surface=self.surface,
                      points=self.points,
                      color=self.wall_color)
-
-        # Debug lines
-        draw.line(surface=self.surface,
-                  start_pos=self.points[0],
-                  end_pos=self.points[1],
-                  color=(255, 0, 0),
-                  width=1)
-        draw.line(surface=self.surface,
-                  start_pos=self.points[0],
-                  end_pos=self.points[3],
-                  color=(255, 0, 0),
-                  width=1)
 

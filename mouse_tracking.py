@@ -1,7 +1,7 @@
 from pygame import mouse
 from physics_engine import WorldMechanics
 from particles import Particle
-from utility import Position, Velocity
+from utility import Position, Vector
 
 
 class MouseMonitor:
@@ -18,16 +18,16 @@ class MouseMonitor:
         if mouse_state[0] and not self.previous_mouse_state[0]:
             # New Mouse left click.
             mouse_pos = Position(mouse.get_pos())
-            initial_velocity = Velocity(target=mouse_pos, reverse=True)
+            initial_velocity = Vector(target=mouse_pos, reverse=True)
             self.ghost_particle.pos = mouse_pos
             self.ghost_particle.velocity = initial_velocity
 
         elif mouse_state[0] and self.previous_mouse_state[0]:
             # Left click still being held.
             mouse_pos = Position(mouse.get_pos())
-            new_velocity = Velocity(target=mouse_pos,
-                                    start=self.ghost_particle.pos,
-                                    reverse=True)
+            new_velocity = Vector(target=mouse_pos,
+                                  start=self.ghost_particle.pos,
+                                  reverse=True)
             self.ghost_particle.velocity = new_velocity
             self.ghost_particle.draw(self.surface)
             self.ghost_particle.draw_velocity(self.surface)

@@ -1,25 +1,25 @@
 from pygame import draw, Surface, Rect
 from typing import Dict
-from utility import Position, Velocity, CenterOfMass
+from utility import Position, Vector, CenterOfMass
 from math import pi
 
 
 class Particle:
     def __init__(self,
                  pos: Position = Position(),
-                 velocity: Velocity = Velocity(),
+                 velocity: Vector = Vector(),
                  radius: int = 1,
                  density: int = 1):
         self.id: int = 0
 
         self.pos: Position = pos
-        self._velocity: Velocity = velocity
+        self._velocity: Vector = velocity
         self._radius: int = radius
         self._density: float = density
 
         self.surface_area: float = self._calc_surface_area()
         self.mass: float = self._calc_mass()
-        self.momentum: Velocity = self._calc_momentum()
+        self.momentum: Vector = self._calc_momentum()
 
         self.color = (0, 255, 0)
 
@@ -35,8 +35,8 @@ class Particle:
     def _calc_mass(self) -> float:
         return self._density * self.surface_area
 
-    def _calc_momentum(self) -> Velocity:
-        output: Velocity = self._velocity
+    def _calc_momentum(self) -> Vector:
+        output: Vector = self._velocity
         output.magnitude = output.magnitude * self.mass
         return output
 
@@ -93,9 +93,13 @@ class Particle:
         return self._velocity
 
     @velocity.setter
-    def velocity(self, new_velocity: Velocity):
+    def velocity(self, new_velocity: Vector):
         self._velocity = new_velocity
         self._calc_momentum()
+
+    def add_force(self, force: Vector):
+        pass
+
 
 
 class ParticleCollection:
@@ -108,7 +112,7 @@ class ParticleCollection:
 
     def add_particle(self,
                      pos: Position,
-                     velocity: Velocity,
+                     velocity: Vector,
                      radius: int = 1,
                      density: int = 1):
         new_particle: Particle = Particle(pos=pos,

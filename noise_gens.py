@@ -1,7 +1,7 @@
 import random
 from pygame import Surface
 from particles import ParticleCollection
-from utility import Position, Velocity
+from utility import Position, Vector
 
 
 class ParticleNoise:
@@ -18,7 +18,7 @@ class ParticleNoise:
         random_y = random.randint(0, self.y - 1)
         random_pos = Position(x_pos=random_x,
                               y_pos=random_y)
-        random_velocity = Velocity(target=Position((random.randint(0, self.x - 1), random.randint(0, self.y - 1))))
+        random_velocity = Vector(target=Position((random.randint(0, self.x - 1), random.randint(0, self.y - 1))))
         self.particle_collection.add_particle(random_pos, random_velocity)
 
     def draw_particles(self):

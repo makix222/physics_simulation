@@ -67,7 +67,7 @@ def distance(start: Position, end: Position) -> float:
     return sqrt((start.x - end.x) ** 2 + (start.y - end.y) ** 2)
 
 
-class Velocity:
+class Vector:
     def __init__(self, start: Position = Position(), target: Position = Position(), reverse=False):
         self.magnitude = distance(start, target)
         self.direction = Position(x_pos=target.x - start.x,
@@ -78,6 +78,10 @@ class Velocity:
 
     def __str__(self):
         return f"Magnitude: {self.magnitude}, direction: {self.direction}"
+
+    def __add__(self, other):
+        target = None
+        return Vector(start=Position((0, 0)), )
 
 
 class CenterOfMass:
